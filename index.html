@@ -80,10 +80,10 @@
             const [custSearch, setCustSearch] = useState('');
             const [prodSearch, setProdSearch] = useState('');
             const [cloudData, setCloudData] = useState(() => {
-                const saved = localStorage.getItem('KC_MOCK_DATA');
+                const saved = localStorage.getItem('NL_PRO_MOCK_DATA');
                 return saved ? JSON.parse(saved) : MOCK_DATA;
             });
-            const [sheetUrl, setSheetUrl] = useState(localStorage.getItem('KC_POS_URL') || '');
+            const [sheetUrl, setSheetUrl] = useState(localStorage.getItem('NL_PRO_POS_URL') || '');
             const [loading, setLoading] = useState(false);
             const [showBill, setShowBill] = useState(false);
             const [billImg, setBillImg] = useState(null);
@@ -104,10 +104,10 @@
             const receiptRef = useRef(null);
             const cartEndRef = useRef(null);
 
-            // Tự động lưu mockData cục bộ để Chị đẹp tha hồ test mà không mất dữ liệu mẫu
+            // Tự động lưu mockData cục bộ dành riêng cho bản Pro
             useEffect(() => {
                 if (!sheetUrl) {
-                    localStorage.setItem('KC_MOCK_DATA', JSON.stringify(cloudData));
+                    localStorage.setItem('NL_PRO_MOCK_DATA', JSON.stringify(cloudData));
                 }
             }, [cloudData, sheetUrl]);
 
@@ -387,7 +387,7 @@
             const resetDemoData = () => {
                 if (window.confirm("Chị đẹp có chắc chắn muốn cài đặt lại toàn bộ dữ liệu chạy thử ban đầu không?")) {
                     setCloudData(MOCK_DATA);
-                    localStorage.removeItem('KC_MOCK_DATA');
+                    localStorage.removeItem('NL_PRO_MOCK_DATA');
                     triggerToast("Đã khôi phục dữ liệu mẫu!", "success");
                 }
             };
@@ -548,7 +548,7 @@
                                                 <div className="text-sm font-bold uppercase truncate text-slate-800">{s.customer || s['Khách hàng']}</div>
                                                 <div className="text-[10px] font-semibold text-slate-400 mt-1">{new Date(s.date || s['Ngày']).toLocaleString('vi-VN')}</div>
                                             </div>
-                                            <div className="text-right flex flex-col items-end gap-1.5">
+                                            <div className="text-right flex-shrink-0 flex flex-col items-end gap-1.5">
                                                 <div className="text-sm font-black text-slate-900">{(Number(s.total || s['Tổng'])).toLocaleString()}đ</div>
                                                 <button onClick={() => handleViewHistory(s)} className="px-3 py-1.5 bg-slate-100 hover:bg-blue-50 hover:text-blue-600 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-colors">Chi tiết</button>
                                             </div>
@@ -568,7 +568,7 @@
                                         <h3 className="font-black text-lg text-slate-800">Cấu hình kết nối Cloud</h3>
                                         <p className="text-xs text-slate-400 mt-1">Dán liên kết Web App của Google Apps Script để kết nối dữ liệu bán hàng trực tuyến.</p>
                                     </div>
-                                    <textarea className="w-full p-4 bg-slate-50 border border-slate-200/60 rounded-2xl text-xs font-mono outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10" rows="5" value={sheetUrl} onChange={e => {setSheetUrl(e.target.value); localStorage.setItem('KC_POS_URL', e.target.value)}} placeholder="https://script.google.com/macros/s/.../exec" />
+                                    <textarea className="w-full p-4 bg-slate-50 border border-slate-200/60 rounded-2xl text-xs font-mono outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10" rows="5" value={sheetUrl} onChange={e => {setSheetUrl(e.target.value); localStorage.setItem('NL_PRO_POS_URL', e.target.value)}} placeholder="https://script.google.com/macros/s/.../exec" />
                                     <button onClick={() => {fetchData(); setView('pos');}} className="w-full bg-slate-900 hover:bg-slate-800 text-white py-4 rounded-2xl font-black uppercase tracking-widest text-xs active:scale-[0.98] transition-all shadow-md">Đồng bộ dữ liệu</button>
                                 </div>
 
@@ -692,7 +692,7 @@
                         </div>
                     )}
 
-                    {/* VÙNG CHỨA HÓA ĐƠN CHẤT LƯỢNG CAO (ẨN KHỎI MÀN HÌNH ĐỂ CHỤP ẢNH) */}
+                    {/* VÙNG CHỨA HÓA ĐƠN CHẤT LƯỢCO CAO (ẨN KHỎI MÀN HÌNH ĐỂ CHỤP ẢNH) */}
                     <div className="fixed -left-[9999px] top-0 font-invoice">
                         <div ref={receiptRef} className="w-[750px] bg-white p-14 text-black">
                             <div className="text-center mb-12">
